@@ -3,19 +3,22 @@ import { api } from '../../../shared/api/axios.ts'
 import { AxiosError } from 'axios'
 import { Article } from './types.ts'
 
-// !GET All Articles
-export const fetchArticles = createAsyncThunk<Article[], void>('articles/fetchArticles', async (_, thunkAPI) => {
-  try {
-    const response = await api.get('/articles')
-    return response.data
-  } catch (error: unknown) {
-    if (error instanceof AxiosError) {
-      const message = error.response?.data?.message && 'Failed to fetch articles'
-      return thunkAPI.rejectWithValue(message)
+// !GET All articles
+export const fetchArticles = createAsyncThunk<Article[], void>(
+  'articles/fetchArticles',
+  async (_, thunkAPI) => {
+    try {
+      const response = await api.get<Article[]>('/articles')
+      return response.data
+    } catch (error: unknown) {
+      if (error instanceof AxiosError) {
+        const message = error.message || 'Failed to fetch articles'
+        return thunkAPI.rejectWithValue(message)
+      }
+      return thunkAPI.rejectWithValue('Reject')
     }
-    return thunkAPI.rejectWithValue('Failed to fetch articles')
   }
-})
+)
 
 // ! GET Article by ID
 export const fetchArticleById = createAsyncThunk<Article, string>(
@@ -26,10 +29,10 @@ export const fetchArticleById = createAsyncThunk<Article, string>(
       return response.data
     } catch (error: unknown) {
       if (error instanceof AxiosError) {
-        const message = error.response?.data?.message || 'Fetch article by id failed'
+        const message = error.message || 'Failed to fetch article by ID'
         return thunkAPI.rejectWithValue(message)
       }
-      return thunkAPI.rejectWithValue('Fetch article by id failed')
+      return thunkAPI.rejectWithValue('Reject')
     }
   }
 )

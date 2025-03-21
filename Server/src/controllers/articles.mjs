@@ -1,4 +1,5 @@
 import { getAllArticles, getArticleById } from '../models/articles.mjs'
+import { log } from '../utils/logger.mjs'
 
 const getArticlesHandler = (req, res) => {
 	const articles = getAllArticles()
@@ -8,7 +9,6 @@ const getArticlesHandler = (req, res) => {
 const getArticlesByIdHandler = (req, res) => {
 	const { articleId } = req.params
 	const article = getArticleById(articleId)
-
 	res.status(200).json(article)
 }
 

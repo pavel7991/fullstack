@@ -4,12 +4,11 @@ import { Box, CircularProgress } from '@mui/material'
 import { useEffect } from 'react'
 import { fetchArticleById } from '../../entities/article/model/arcticles.thunks.ts'
 import { AppDispatch, RootState } from '../../app/store/store.ts'
-import ArticleDetails from './ArticleDetails.tsx'
 
 const ArticleDetailsPage = () => {
   const { id } = useParams()
   const dispatch = useDispatch<AppDispatch>()
-  const { selectedArticle, loading, error } = useSelector((state: RootState) => state.articles)
+  const { selectedArticle: article, loading, error } = useSelector((state: RootState) => state.articles)
 
   useEffect(() => {
     if (id) {
@@ -31,11 +30,12 @@ const ArticleDetailsPage = () => {
       </Box>
     )
   }
-  if (!selectedArticle) return <div>Article not found</div>
+  if (!article) return <div>Article not found</div>
 
   return (
     <div>
-      <ArticleDetails article={selectedArticle} />
+      <h2>{article.title}</h2>
+      <p>{article.content}</p>
     </div>
   )
 }

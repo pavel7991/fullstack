@@ -36,6 +36,7 @@ const articlesSlice = createSlice({
       // * Get Article by ID
       .addCase(fetchArticleById.pending, (state) => {
         state.loading = true
+        state.error = null
       })
       .addCase(fetchArticleById.fulfilled, (state, action: PayloadAction<Article>) => {
         state.loading = false
