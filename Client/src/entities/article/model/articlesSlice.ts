@@ -1,7 +1,6 @@
 import { Article, ArticleState } from './types.ts'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { fetchArticleById, fetchArticles } from './arcticles.thunks.ts'
-import { RootState } from '../../../app/store/store.ts'
 
 const initialState: ArticleState = {
   articles: [],
@@ -15,7 +14,7 @@ const articlesSlice = createSlice({
   initialState,
   reducers: {
     addArticle: (state, action: PayloadAction<Article>) => {
-      state.articles.push(action.payload)
+      state.articles.unshift(action.payload)
     }
   },
   extraReducers: (builder) => {
@@ -49,7 +48,6 @@ const articlesSlice = createSlice({
   }
 })
 
-export const selectArticlesState = (state: RootState) => state.articles
 export const { addArticle } = articlesSlice.actions
 
 export default articlesSlice.reducer

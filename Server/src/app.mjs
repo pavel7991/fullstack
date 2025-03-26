@@ -1,6 +1,7 @@
 import express from 'express'
 import cors from 'cors'
 import router from './routes/index.mjs'
+import { logRequests } from './middleware/logRequest.mjs'
 
 const app = express()
 const PORT = 5000
@@ -14,7 +15,7 @@ app.use(
 )
 
 app.use(express.json())
-
+app.use(logRequests)
 app.use(router)
 
 app.listen(PORT, () => {

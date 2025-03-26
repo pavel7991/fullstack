@@ -1,8 +1,11 @@
-export interface Article {
-  id: number
+export interface ArticleCreateRequest {
   title: string
   content: string
-  img: string
+  img?: string
+}
+
+export interface Article extends ArticleCreateRequest {
+  id: number
 }
 
 export interface ArticleState {

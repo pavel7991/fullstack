@@ -1,7 +1,5 @@
 const getRootHandler = (req, res) => {
-	res.status(200).json({
-		message: 'Hello, From Express!'
-	})
+	res.status(200)
 }
 
 export { getRootHandler }

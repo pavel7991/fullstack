@@ -1,14 +1,22 @@
 import { useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { Box, CircularProgress } from '@mui/material'
+import { Container, Typography } from '@mui/material'
 import { useEffect } from 'react'
 import { fetchArticleById } from '../../entities/article/model/arcticles.thunks.ts'
 import { AppDispatch, RootState } from '../../app/store/store.ts'
+import ArticleCard from '../../entities/article/ui/ArticleCard.tsx'
+import Loader from '../../shared/ui/Loader.tsx'
+import ErrorFetch from '../../shared/ui/ErrorFetch.tsx'
+import { AppBreadcrumbs } from '../../shared/ui/AppBreadcrumbs.tsx'
 
 const ArticleDetailsPage = () => {
   const { id } = useParams()
   const dispatch = useDispatch<AppDispatch>()
-  const { selectedArticle: article, loading, error } = useSelector((state: RootState) => state.articles)
+  const {
+    selectedArticle: article,
+    loading,
+    error
+  } = useSelector((state: RootState) => state.articles)
 
   useEffect(() => {
     if (id) {
@@ -16,27 +24,22 @@ const ArticleDetailsPage = () => {
     }
   }, [id, dispatch])
 
-  if (loading) {
+  if (loading) return <Loader />
+  if (error) return <ErrorFetch error={error} />
+  if (!article) {
     return (
-      <Box display="flex" justifyContent="center" alignItems="center" py={20}>
-        <CircularProgress />
-      </Box>
+      <Container>
+        <AppBreadcrumbs currentPathName={'Not found'} />
+        <Typography variant="h4">Article not found</Typography>
+      </Container>
     )
   }
-  if (error) {
-    return (
-      <Box display="flex" justifyContent="center" alignItems="center" py={20}>
-        <h1>{error}</h1>
-      </Box>
-    )
-  }
-  if (!article) return <div>Article not found</div>
 
   return (
-    <div>
-      <h2>{article.title}</h2>
-      <p>{article.content}</p>
-    </div>
+    <Container>
+      <AppBreadcrumbs currentPathName={article.title} />
+      <ArticleCard article={article} />
+    </Container>
   )
 }
 export default ArticleDetailsPage

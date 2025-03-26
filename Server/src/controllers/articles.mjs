@@ -1,4 +1,4 @@
-import { getAllArticles, getArticleById } from '../models/articles.mjs'
+import { createArticle, getAllArticles, getArticleById } from '../models/articles.mjs'
 import { log } from '../utils/logger.mjs'
 
 const getArticlesHandler = (req, res) => {
@@ -12,4 +12,12 @@ const getArticlesByIdHandler = (req, res) => {
 	res.status(200).json(article)
 }
 
-export { getArticlesHandler, getArticlesByIdHandler }
+const postArticleHandler = (req, res) => {
+	const { title, content, img } = req.body
+
+	const newArticle = createArticle({ title, content, img })
+	log(`New article create! id:${newArticle.id}, name:${newArticle.title}`, 'green')
+	res.status(201).json(newArticle)
+}
+
+export { getArticlesHandler, getArticlesByIdHandler, postArticleHandler }

@@ -15,7 +15,7 @@ const Hero = () => {
           <Grid container spacing={4} py={'12%'}>
             <Grid size={12}>
               <Typography variant="h2" color="white">
-                React / Redux Toolkit / Material UI / Axios / Express
+                React / Redux Toolkit / TypeScript / Material UI / Axios / Express
               </Typography>
             </Grid>
             <Grid size={{ xs: 12, md: 8 }}>

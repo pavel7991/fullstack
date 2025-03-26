@@ -1,7 +1,19 @@
-import { articlesData } from '../data/dataArticles.mjs'
+import { dataArticles, counterArticles } from '../data/dataArticles.mjs'
 import { findObjectById } from '../utils/arrayUtils.mjs'
 
-const getAllArticles = () => articlesData
-const getArticleById = (articleId) => findObjectById(articlesData, articleId)
+const getAllArticles = () => [...dataArticles].reverse()
+const getArticleById = (articleId) => findObjectById(dataArticles, articleId)
 
-export { getAllArticles, getArticleById }
+const createArticle = ({ title, content, img }) => {
+	const newArticle = {
+		id: ++counterArticles.id,
+		title,
+		content,
+		img
+	}
+	dataArticles.push(newArticle)
+
+	return newArticle
+}
+
+export { getAllArticles, getArticleById, createArticle }

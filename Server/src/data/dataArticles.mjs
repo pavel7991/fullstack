@@ -1,4 +1,8 @@
-export const articlesData = [
+export const counterArticles = {
+	id: 12
+}
+
+export const dataArticles = [
 	{
 		id: 1,
 		title: 'How to Build a Scalable React App',

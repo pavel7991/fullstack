@@ -1,4 +1,4 @@
-import { Button, Card, CardActions, CardContent, CardMedia, Typography } from '@mui/material'
+import { Box, Button, Card, CardActions, CardContent, CardMedia, Typography } from '@mui/material'
 import Grid from '@mui/material/Grid2'
 import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, RootState } from '../../app/store/store.ts'
@@ -6,8 +6,9 @@ import { useEffect } from 'react'
 import { fetchArticles } from '../../entities/article/model/arcticles.thunks.ts'
 import { Article } from '../../entities/article/model/types.ts'
 import { NavLink } from 'react-router-dom'
-import Loading from '../../shared/ui/Loading.tsx'
+import Loader from '../../shared/ui/Loader.tsx'
 import ErrorFetch from '../../shared/ui/ErrorFetch.tsx'
+import NoImgBg from '../../shared/ui/NoImgBg.tsx'
 
 const clampRows = (index: number) => {
   return {
@@ -27,7 +28,7 @@ const ArticleList = () => {
     dispatch(fetchArticles())
   }, [dispatch])
 
-  if (loading) return <Loading />
+  if (loading) return <Loader />
   if (error) return <ErrorFetch error={error} />
 
   return (
@@ -39,7 +40,12 @@ const ArticleList = () => {
           size={{ lg: 3, md: 4, sm: 6, xs: 12 }}
           sx={{ display: 'flex', flexDirection: 'column' }}
         >
-          <CardMedia component="img" alt={article.title} height="240" image={article.img} />
+          {article?.img?.trim() ? (
+            <CardMedia component="img" alt={article.title} height="240" image={article.img} />
+          ) : (
+            <Box component={NoImgBg} sx={{ flexBasis: '240px' }} />
+          )}
+
           <CardContent sx={{ flexGrow: 1 }}>
             <Typography component="h3" variant="h5" gutterBottom sx={clampRows(2)}>
               {article.title}

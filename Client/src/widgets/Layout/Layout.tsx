@@ -1,7 +1,10 @@
 import Header from '../Header/Header.tsx'
 import { Outlet } from 'react-router-dom'
+import useTitlePage from '../../shared/hooks/useTitlePage.tsx'
 
 const Layout = () => {
+  useTitlePage()
+
   return (
     <>
       <Header />
