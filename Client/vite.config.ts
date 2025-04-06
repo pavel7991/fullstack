@@ -6,10 +6,11 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'http://localhost:5000', // Адрес вашего Express-сервера
+        target: 'http://localhost:5000',
         changeOrigin: true,
         secure: false,
-      },
-    },
-  },
-});
+        rewrite: (path) => path.replace(/^\/api/, '') // Убираем /api при проксировании
+      }
+    }
+  }
+})

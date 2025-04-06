@@ -8,7 +8,7 @@ export const log = (...args) => {
 		return
 	}
 
-	const message = args.map((arg) => (typeof arg === 'string' ? arg : JSON.stringify(arg))).join(' ')
+	const message = args.map((arg) => (typeof arg === 'string' ? arg : JSON.stringify(arg, null, 2))).join(' ')
 
 	console.log(chalk[color](message))
 }

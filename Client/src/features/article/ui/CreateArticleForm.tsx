@@ -1,8 +1,9 @@
 import { ChangeEvent, FormEvent, useState } from 'react'
 import { useCreateArticle } from '../models/useCreateArticle.ts'
 import { Article } from '../../../entities/article/model/types.ts'
-import { Alert, Box, Button, Link, TextField, TextFieldProps } from '@mui/material'
+import { Alert, Box, Button, Link } from '@mui/material'
 import { NavLink } from 'react-router-dom'
+import Input from '../../../shared/ui/form/Input.tsx'
 
 const CreateArticleForm = () => {
   const [title, setTitle] = useState('')
@@ -21,13 +22,6 @@ const CreateArticleForm = () => {
     }
   }
 
-  const textFieldProps: TextFieldProps = {
-    variant: 'outlined',
-    size: 'small',
-    margin: 'normal',
-    fullWidth: true
-  }
-
   return (
     <div>
       {createdArticle && (
@@ -43,27 +37,25 @@ const CreateArticleForm = () => {
 
       {!createdArticle && (
         <Box component="form" onSubmit={handleSubmit}>
-          <TextField
+          <Input
             label="Name"
             value={title}
             onChange={(e: ChangeEvent<HTMLInputElement>) => setTitle(e.target.value)}
             required
-            {...textFieldProps}
           />
-          <TextField
+
+          <Input
             label="URL img"
             value={img}
             onChange={(e: ChangeEvent<HTMLInputElement>) => setImg(e.target.value)}
-            {...textFieldProps}
           />
-          <TextField
+          <Input
             label="Content"
             value={content}
             onChange={(e: ChangeEvent<HTMLTextAreaElement>) => setContent(e.target.value)}
             multiline
             minRows={6}
             required
-            {...textFieldProps}
           />
           {error && <Alert severity="error">{error}</Alert>}
 

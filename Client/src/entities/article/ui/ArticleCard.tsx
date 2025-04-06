@@ -1,4 +1,3 @@
-import React from 'react'
 import { Box, Card, CardContent, Typography } from '@mui/material'
 import { Article } from '../model/types'
 import Grid from '@mui/material/Grid2'
@@ -8,7 +7,7 @@ interface ArticleCardProps {
   article: Article
 }
 
-const ArticleCard: React.FC<ArticleCardProps> = ({ article }) => {
+const ArticleCard = ({ article }: ArticleCardProps) => {
   return (
     <Card sx={{ my: 5, px: 2 }}>
       <CardContent>

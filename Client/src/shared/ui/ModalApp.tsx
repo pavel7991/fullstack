@@ -20,7 +20,7 @@ interface ModalAppProps {
 
 const ModalApp = ({ open, handleClose, title, body }: ModalAppProps) => {
   return (
-    <Dialog open={open} onClose={handleClose}>
+    <Dialog open={open} onClose={handleClose} fullWidth={true}>
       <DialogTitle sx={{ display: 'flex', justifyContent: 'space-between' }}>
         <Box>
           <Typography sx={{ mt: '5px' }} variant="h5">
@@ -34,9 +34,7 @@ const ModalApp = ({ open, handleClose, title, body }: ModalAppProps) => {
         </Box>
       </DialogTitle>
 
-      <DialogContent dividers>
-        <Typography>{body}</Typography>
-      </DialogContent>
+      <DialogContent dividers>{body}</DialogContent>
       <DialogActions>
         <Button onClick={handleClose}>Close</Button>
       </DialogActions>
