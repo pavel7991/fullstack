@@ -1,7 +1,10 @@
-export interface RegisterUserInterface {
-	username: string
+export interface LoginUserInterface {
 	email: string
 	password: string
-	confirmPassword: string
 	global?: string
+}
+
+export interface RegisterUserInterface extends LoginUserInterface {
+	username: string
+	confirmPassword: string
 }

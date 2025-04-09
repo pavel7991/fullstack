@@ -35,7 +35,7 @@ export const registerUserSchema = Joi.object({
 })
 
 // Схема для авторизации
-export const loginSchema = Joi.object({
+export const loginUserSchema = Joi.object({
 	email: emailSchema,
 	password: passwordSchema
 })

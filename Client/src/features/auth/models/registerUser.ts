@@ -1,6 +1,6 @@
-import { api } from '../../../shared/api/axios.ts'
-import { RegisterUserInterface } from './types.ts'
 import axios from 'axios'
+import api from '../../../shared/api/axios.ts'
+import { RegisterUserInterface } from './types.ts'
 
 const registerUser = async (data: RegisterUserInterface) => {
 	try {

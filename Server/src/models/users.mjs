@@ -1,6 +1,5 @@
 import mongoose from 'mongoose'
 import bcrypt from 'bcrypt'
-import { log } from '../utils/logger.mjs'
 
 const userSchema = new mongoose.Schema({
 	username: { type: String, required: true },

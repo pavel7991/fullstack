@@ -1,15 +1,17 @@
+import dotenv from 'dotenv'
 import express from 'express'
 import { dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import cors from 'cors'
 import corsOptions from './config/cors.mjs'
 import router from './routes/index.mjs'
+
 import { logRequests } from './middlewares/logRequest.mjs'
-import dotenv from 'dotenv'
-import session from 'express-session'
 import { log } from './utils/logger.mjs'
+
 import connectDB from './config/db.mjs'
 import errorHandler from './middlewares/errorHandler.mjs'
+import cookieParser from 'cookie-parser'
 
 dotenv.config()
 
@@ -24,13 +26,7 @@ app.use(logRequests)
 
 connectDB().catch()
 
-app.use(
-	session({
-		secret: process.env.SESSION_SECRET,
-		resave: false,
-		saveUninitialized: true
-	})
-)
+app.use(cookieParser())
 
 app.use(router)
 app.use(errorHandler)
