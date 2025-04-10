@@ -6,7 +6,7 @@ import FormikSubmitButton from '../../../shared/ui/form/FormikSubmitButton.tsx'
 import FormikTextField from '../../../shared/ui/form/FormikTextField.tsx'
 import { useState } from 'react'
 import AppSnackbar from '../../../shared/ui/AppSnackbar.tsx'
-import { loginUser } from '../models/store/auth.thunk.ts'
+import { loginUser } from '../models/auth.thunk.ts'
 import { useDispatch } from 'react-redux'
 import { AppDispatch } from '../../../app/store/store.ts'
 
@@ -19,26 +19,28 @@ const LoginUserForm = () => {
 		password: ''
 	}
 
+	interface LoginErrorInterface {
+		email?: string
+		password?: string
+		global?: string[]
+	}
+
 	const handleSubmit = async (
 		values: LoginUserInterface,
 		{ setErrors, setSubmitting }: FormikHelpers<LoginUserInterface>
 	) => {
 		try {
-			const actionResult = await dispatch(loginUser(values))
+			await dispatch(loginUser(values))
+		} catch (error: unknown) {
+			const err = error as LoginErrorInterface
+			const { email, password, global } = err
 
-			// Проверка на rejected action
-			if (loginUser.rejected.match(actionResult)) {
-				const error = actionResult.payload // Здесь будет ошибка от rejectWithValue
-				setErrors(error) // или можешь добавить кастомную обработку ошибок
-				if ('global' in error) {
-					setSnackbar({ open: true, message: error.global })
-				}
+			if (email || password) {
+				setErrors({ email, password })
 			}
-		} catch (err: any) {
-			setErrors(err)
 
-			if ('global' in err) {
-				setSnackbar({ open: true, message: err.global })
+			if (Array.isArray(global)) {
+				setSnackbar({ open: true, message: global.join(' ') })
 			}
 		} finally {
 			setSubmitting(false)
@@ -47,13 +49,29 @@ const LoginUserForm = () => {
 
 	return (
 		<>
-			<Formik initialValues={initialValues} validationSchema={loginValidationSchema} onSubmit={handleSubmit}>
+			<Formik
+				initialValues={initialValues}
+				validationSchema={loginValidationSchema}
+				onSubmit={handleSubmit}
+			>
 				{({ isSubmitting }) => (
 					<Form>
 						<Box sx={{ mt: 2 }}>
-							<FormikTextField name="email" type="email" label="Email" placeholder="Enter your email" />
-							<FormikTextField name="password" type="password" label="Password" placeholder="Enter your password" />
-							<FormikSubmitButton loading={isSubmitting}>{isSubmitting ? 'Entering...' : 'Login'}</FormikSubmitButton>
+							<FormikTextField
+								name="email"
+								type="email"
+								label="Email"
+								placeholder="Enter your email"
+							/>
+							<FormikTextField
+								name="password"
+								type="password"
+								label="Password"
+								placeholder="Enter your password"
+							/>
+							<FormikSubmitButton loading={isSubmitting}>
+								{isSubmitting ? 'Entering...' : 'Login'}
+							</FormikSubmitButton>
 						</Box>
 					</Form>
 				)}

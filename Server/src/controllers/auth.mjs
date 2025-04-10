@@ -16,7 +16,7 @@ export const postRegisterHandler = async (req, res, next) => {
 				name: 'ERROR_CONFLICT',
 				status: 409,
 				message,
-				data: {
+				dataError: {
 					email: message
 				}
 			})
@@ -43,7 +43,7 @@ export const postLoginHandler = async (req, res, next) => {
 				name: 'ERROR_USER_NOT_FOUND',
 				status: 400,
 				message,
-				data: {
+				dataError: {
 					email: message
 				}
 			})
@@ -56,7 +56,7 @@ export const postLoginHandler = async (req, res, next) => {
 				name: 'ERROR_INVALID_PASSWORD',
 				status: 401,
 				message,
-				data: {
+				dataError: {
 					password: message
 				}
 			})

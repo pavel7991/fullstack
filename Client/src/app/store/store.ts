@@ -1,13 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit'
 import themeReducer from './slices/themeSlice.ts'
 import articlesReducer from '../../entities/article/model/articlesSlice.ts'
-import authReducer from '../../features/auth/models/store/authSlice.ts'
+import authReducer from '../../features/auth/models/authSlice.ts'
 
 const store = configureStore({
 	reducer: {
 		auth: authReducer,
-		articles: articlesReducer,
-		theme: themeReducer
+		theme: themeReducer,
+		articles: articlesReducer
 	}
 })
 

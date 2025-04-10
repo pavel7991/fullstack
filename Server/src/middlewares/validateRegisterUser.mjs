@@ -13,7 +13,7 @@ export const validateRegisterUser = (req, res, next) => {
 			name: 'ERROR_USER_VALIDATION',
 			status: 400,
 			message: 'Ошибка валидации данных',
-			data: details
+			dataError: details
 		})
 	}
 

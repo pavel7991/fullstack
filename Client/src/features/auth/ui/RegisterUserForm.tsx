@@ -1,14 +1,21 @@
 import { Box } from '@mui/material'
 import { Formik, Form, FormikHelpers } from 'formik'
 import { registerValidationSchema } from '../../../schemas/auth.ts'
-import { RegisterUserInterface } from '../models/types.ts'
+import {
+	ErrorRegisterInterface,
+	RegisterUserInterface
+} from '../models/types.ts'
 import FormikSubmitButton from '../../../shared/ui/form/FormikSubmitButton.tsx'
 import FormikTextField from '../../../shared/ui/form/FormikTextField.tsx'
 import registerUser from '../models/registerUser.ts'
 import { useState } from 'react'
 import AppSnackbar from '../../../shared/ui/AppSnackbar.tsx'
+import { useDispatch } from 'react-redux'
+import { AppDispatch } from '../../../app/store/store.ts'
+import { login } from '../models/authSlice.ts'
 
 const RegisterUserForm = () => {
+	const dispatch = useDispatch<AppDispatch>()
 	const [snackbar, setSnackbar] = useState({ open: false, message: '' })
 
 	const initialValues: RegisterUserInterface = {
@@ -24,11 +31,16 @@ const RegisterUserForm = () => {
 	) => {
 		try {
 			await registerUser(values)
-		} catch (err: any) {
-			setErrors(err)
+			dispatch(login())
+		} catch (error: unknown) {
+			const err = error as ErrorRegisterInterface
+			const { username, email, password, confirmPassword, global } = err
 
-			if ('global' in err) {
-				setSnackbar({ open: true, message: err.global })
+			if (username || email || password || confirmPassword) {
+				setErrors({ username, email, password, confirmPassword })
+			}
+			if (Array.isArray(global)) {
+				setSnackbar({ open: true, message: global.join(' ') })
 			}
 		} finally {
 			setSubmitting(false)
@@ -37,15 +49,33 @@ const RegisterUserForm = () => {
 
 	return (
 		<>
-			<Formik initialValues={initialValues} validationSchema={registerValidationSchema} onSubmit={handleSubmit}>
+			<Formik
+				initialValues={initialValues}
+				validationSchema={registerValidationSchema}
+				onSubmit={handleSubmit}
+			>
 				{({ isSubmitting }) => (
 					<Form>
 						<Box sx={{ mt: 2 }}>
-							<FormikTextField name="username" label="Username" placeholder="Enter your username" />
+							<FormikTextField
+								name="username"
+								label="Username"
+								placeholder="Enter your username"
+							/>
 
-							<FormikTextField name="email" type="email" label="Email" placeholder="Enter your email" />
+							<FormikTextField
+								name="email"
+								type="email"
+								label="Email"
+								placeholder="Enter your email"
+							/>
 
-							<FormikTextField name="password" type="password" label="Password" placeholder="Enter your password" />
+							<FormikTextField
+								name="password"
+								type="password"
+								label="Password"
+								placeholder="Enter your password"
+							/>
 
 							<FormikTextField
 								name="confirmPassword"

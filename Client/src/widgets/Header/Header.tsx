@@ -7,7 +7,7 @@ import { useState } from 'react'
 import LoginUserForm from '../../features/auth/ui/LoginUserForm.tsx'
 import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, RootState } from '../../app/store/store.ts'
-import { logoutUser } from '../../features/auth/models/store/auth.thunk.ts'
+import { logoutUser } from '../../features/auth/models/auth.thunk.ts'
 
 const Header = () => {
 	const [modalRegister, setModalRegister] = useState(false)
@@ -22,7 +22,14 @@ const Header = () => {
 		<>
 			<AppBar position="sticky" color="inherit" sx={{ py: 1 }}>
 				<Container>
-					<Box sx={{ px: '0', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+					<Box
+						sx={{
+							px: '0',
+							display: 'flex',
+							justifyContent: 'space-between',
+							alignItems: 'center'
+						}}
+					>
 						<Typography variant="h5" color="textSecondary">
 							My App
 						</Typography>
@@ -31,7 +38,12 @@ const Header = () => {
 
 						<SwitchTheme />
 						{isAuthenticated && (
-							<Button variant="outlined" color="inherit" size="small" onClick={handleLogout}>
+							<Button
+								variant="outlined"
+								color="inherit"
+								size="small"
+								onClick={handleLogout}
+							>
 								Logout
 							</Button>
 						)}
@@ -62,14 +74,22 @@ const Header = () => {
 				</Container>
 			</AppBar>
 
-			<ModalApp title={'Login'} body={<LoginUserForm />} open={modalLogin} handleClose={() => setModalLogin(false)} />
-
-			<ModalApp
-				title={'Registration'}
-				body={<RegisterUserForm />}
-				open={modalRegister}
-				handleClose={() => setModalRegister(false)}
-			/>
+			{!isAuthenticated && (
+				<>
+					<ModalApp
+						title={'Login'}
+						body={<LoginUserForm />}
+						open={modalLogin}
+						handleClose={() => setModalLogin(false)}
+					/>
+					<ModalApp
+						title={'Registration'}
+						body={<RegisterUserForm />}
+						open={modalRegister}
+						handleClose={() => setModalRegister(false)}
+					/>
+				</>
+			)}
 		</>
 	)
 }
