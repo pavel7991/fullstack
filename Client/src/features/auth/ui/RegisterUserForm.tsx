@@ -10,12 +10,11 @@ import FormikTextField from '../../../shared/ui/form/FormikTextField.tsx'
 import registerUser from '../models/registerUser.ts'
 import { useState } from 'react'
 import AppSnackbar from '../../../shared/ui/AppSnackbar.tsx'
-import { useDispatch } from 'react-redux'
-import { AppDispatch } from '../../../app/store/store.ts'
 import { login } from '../models/authSlice.ts'
+import { useAppDispatch } from '../../../app/store/hooks.ts'
 
 const RegisterUserForm = () => {
-	const dispatch = useDispatch<AppDispatch>()
+	const dispatch = useAppDispatch()
 	const [snackbar, setSnackbar] = useState({ open: false, message: '' })
 
 	const initialValues: RegisterUserInterface = {

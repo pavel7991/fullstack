@@ -2,7 +2,7 @@ import ArticleList from '../../widgets/ArticlesList/ArticleList.tsx'
 import { Box, Button, Container } from '@mui/material'
 import TitlePage from '../../shared/ui/TitlePage.tsx'
 import { AppBreadcrumbs } from '../../shared/ui/AppBreadcrumbs.tsx'
-import ModalApp from '../../features/modal/ModalApp.tsx'
+import ModalApp from '../../shared/ui/ModalApp.tsx'
 import { useState } from 'react'
 import CreateArticleForm from '../../features/article/ui/CreateArticleForm.tsx'
 

@@ -7,13 +7,12 @@ import FormikTextField from '../../../shared/ui/form/FormikTextField.tsx'
 import { useState } from 'react'
 import AppSnackbar from '../../../shared/ui/AppSnackbar.tsx'
 import { loginUser } from '../models/auth.thunk.ts'
-import { useDispatch } from 'react-redux'
-import { AppDispatch } from '../../../app/store/store.ts'
-import { hideModal } from '../../modal/modalSlice.ts'
+import { useAppDispatch } from '../../../app/store/hooks.ts'
+import { closeModal } from '../../modals/modalSlice.ts'
 
 const LoginUserForm = () => {
 	const [snackbar, setSnackbar] = useState({ open: false, message: '' })
-	const dispatch = useDispatch<AppDispatch>()
+	const dispatch = useAppDispatch()
 
 	const initialValues: LoginUserInterface = {
 		email: '',
@@ -32,7 +31,7 @@ const LoginUserForm = () => {
 	) => {
 		try {
 			await dispatch(loginUser(values))
-			dispatch(hideModal())
+			dispatch(closeModal())
 		} catch (error: unknown) {
 			const err = error as LoginErrorInterface
 			const { email, password, global } = err

@@ -1,15 +1,16 @@
-import AppThemeProvider from './providers/ThemeProvider.tsx'
-import AppRouterProvider from './providers/RouterProvider.tsx'
-import AppInit from './providers/AppInit.tsx'
+import AppInit from './init/AppInit.tsx'
+import StoreProvider from './providers/StoreProvider.tsx'
+import RouterProvider from './providers/RouterProvider.tsx'
+import ThemeProvider from './providers/ThemeProvider.tsx'
 
 const App = () => {
 	return (
-		<>
+		<StoreProvider>
 			<AppInit />
-			<AppThemeProvider>
-				<AppRouterProvider />
-			</AppThemeProvider>
-		</>
+			<ThemeProvider>
+				<RouterProvider />
+			</ThemeProvider>
+		</StoreProvider>
 	)
 }
 

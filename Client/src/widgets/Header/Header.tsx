@@ -1,23 +1,14 @@
 import { AppBar, Container, Typography, Button, Box } from '@mui/material'
 import SwitchTheme from '../../shared/ui/SwitchThemeButton.tsx'
 import Navbar from './Navbar.tsx'
-import RegisterUserForm from '../../features/auth/ui/RegisterUserForm.tsx'
-import LoginUserForm from '../../features/auth/ui/LoginUserForm.tsx'
-import { useDispatch, useSelector } from 'react-redux'
-import { AppDispatch, RootState } from '../../app/store/store.ts'
 import { logoutUser } from '../../features/auth/models/auth.thunk.ts'
-import { showModal } from '../../features/modal/modalSlice.ts'
+
+import { useAppDispatch, useAppSelector } from '../../app/store/hooks.ts'
+import { openModal } from '../../features/modals/modalSlice.ts'
 
 const Header = () => {
-	const { isAuthenticated } = useSelector((state: RootState) => state.auth)
-	const dispatch = useDispatch<AppDispatch>()
-
-	const openLoginModal = () => {
-		dispatch(showModal({ title: 'Login', body: <LoginUserForm /> }))
-	}
-	const openRegisterModal = () => {
-		dispatch(showModal({ title: 'Registration', body: <RegisterUserForm /> }))
-	}
+	const { isAuthenticated } = useAppSelector((state) => state.auth)
+	const dispatch = useAppDispatch()
 
 	const handleLogout = () => {
 		dispatch(logoutUser())
@@ -58,7 +49,7 @@ const Header = () => {
 									variant="outlined"
 									color="inherit"
 									size="small"
-									onClick={openLoginModal}
+									onClick={() => dispatch(openModal('LOGIN'))}
 								>
 									Login
 								</Button>
@@ -67,7 +58,7 @@ const Header = () => {
 									color="warning"
 									size="small"
 									sx={{ ml: 2 }}
-									onClick={openRegisterModal}
+									onClick={() => dispatch(openModal('REGISTER'))}
 								>
 									Sing up
 								</Button>

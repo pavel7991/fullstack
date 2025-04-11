@@ -1,12 +1,11 @@
 import { ThemeProvider as MuiThemeProvider, CssBaseline } from '@mui/material'
-import { useSelector } from 'react-redux'
-import { RootState } from '../store/store.ts'
 import { getAppTheme } from '../../shared/config/theme.ts'
 import { ReactNode } from 'react'
-import ModalManager from '../../features/modal/ModalManager.tsx'
+import ModalManager from '../../features/modals/ModalManager.tsx'
+import { useAppSelector } from '../store/hooks.ts'
 
-const AppThemeProvider = ({ children }: { children: ReactNode }) => {
-	const mode = useSelector((state: RootState) => state.theme.mode)
+const ThemeProvider = ({ children }: { children: ReactNode }) => {
+	const mode = useAppSelector((state) => state.theme.mode)
 	const theme = getAppTheme(mode)
 
 	return (
@@ -18,4 +17,4 @@ const AppThemeProvider = ({ children }: { children: ReactNode }) => {
 	)
 }
 
-export default AppThemeProvider
+export default ThemeProvider
