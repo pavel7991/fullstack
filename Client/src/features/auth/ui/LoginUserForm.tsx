@@ -9,6 +9,7 @@ import AppSnackbar from '../../../shared/ui/AppSnackbar.tsx'
 import { loginUser } from '../models/auth.thunk.ts'
 import { useDispatch } from 'react-redux'
 import { AppDispatch } from '../../../app/store/store.ts'
+import { hideModal } from '../../modal/modalSlice.ts'
 
 const LoginUserForm = () => {
 	const [snackbar, setSnackbar] = useState({ open: false, message: '' })
@@ -31,6 +32,7 @@ const LoginUserForm = () => {
 	) => {
 		try {
 			await dispatch(loginUser(values))
+			dispatch(hideModal())
 		} catch (error: unknown) {
 			const err = error as LoginErrorInterface
 			const { email, password, global } = err
