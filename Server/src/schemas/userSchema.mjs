@@ -1,12 +1,17 @@
 import Joi from 'joi'
 
-const usernameSchema = Joi.string().alphanum().min(3).max(30).required().messages({
-	'string.alphanum': 'Username должен содержать только буквы и цифры',
-	'string.min': 'Username должен быть не менее {#limit} символов',
-	'string.max': 'Username должен быть не более {#limit} символов',
-	'string.empty': 'Имя пользователя не может быть пустым',
-	'any.required': 'Username обязателен для заполнения'
-})
+export const usernameSchema = Joi.string()
+	.pattern(/^[a-zA-Zа-яА-Я ]+$/)
+	.min(3)
+	.max(30)
+	.required()
+	.messages({
+		'string.pattern.base': 'Имя должно содержать только буквы и пробелы (без цифр и символов)',
+		'string.min': 'Имя должно быть не менее {#limit} символов',
+		'string.max': 'Имя должно быть не более {#limit} символов',
+		'string.empty': 'Имя пользователя не может быть пустым',
+		'any.required': 'Имя обязательно для заполнения'
+	})
 
 const emailSchema = Joi.string()
 	.email({ minDomainSegments: 2, tlds: { allow: ['com', 'net', 'ua'] } })

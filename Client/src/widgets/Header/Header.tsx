@@ -7,7 +7,7 @@ import { useAppDispatch, useAppSelector } from '../../app/store/hooks.ts'
 import { openModal } from '../../features/modals/modalSlice.ts'
 
 const Header = () => {
-	const { isAuthenticated } = useAppSelector((state) => state.auth)
+	const { isAuthenticated, user } = useAppSelector((state) => state.auth)
 	const dispatch = useAppDispatch()
 
 	const handleLogout = () => {
@@ -33,14 +33,24 @@ const Header = () => {
 						<SwitchTheme />
 
 						{isAuthenticated && (
-							<Button
-								variant="outlined"
-								color="inherit"
-								size="small"
-								onClick={handleLogout}
+							<Box
+								sx={{
+									display: 'flex',
+									alignItems: 'center',
+									gap: 2,
+									justifyContent: 'center'
+								}}
 							>
-								Logout
-							</Button>
+								<Typography>{user.name}</Typography>
+								<Button
+									variant="outlined"
+									color="inherit"
+									size="small"
+									onClick={handleLogout}
+								>
+									Logout
+								</Button>
+							</Box>
 						)}
 
 						{!isAuthenticated && (

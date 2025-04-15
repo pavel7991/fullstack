@@ -2,45 +2,44 @@ import ArticleList from '../../widgets/ArticlesList/ArticleList.tsx'
 import { Box, Button, Container } from '@mui/material'
 import TitlePage from '../../shared/ui/TitlePage.tsx'
 import { AppBreadcrumbs } from '../../shared/ui/AppBreadcrumbs.tsx'
-import ModalApp from '../../shared/ui/ModalApp.tsx'
-import { useState } from 'react'
-import CreateArticleForm from '../../features/article/ui/CreateArticleForm.tsx'
+import { useAppDispatch, useAppSelector } from '../../app/store/hooks.ts'
+import { openModal } from '../../features/modals/modalSlice.ts'
 
 const ArticlesPage = () => {
-	const [modalCreateArticle, setModalCreateArticle] = useState(false)
+	const { isAuthenticated } = useAppSelector((state) => state.auth)
+	const dispatch = useAppDispatch()
+
+	const handleCreateArticle = () => {
+		if (isAuthenticated) {
+			dispatch(openModal('CREATE_ARTICLE'))
+			return
+		}
+		dispatch(openModal('LOGIN'))
+	}
 
 	return (
-		<>
-			<Container>
-				<AppBreadcrumbs />
-				<Box
-					sx={{
-						display: 'flex',
-						justifyContent: 'space-between',
-						alignItems: 'center'
-					}}
-				>
-					<TitlePage text={'All Articles'} />
-					<Box>
-						<Button
-							variant="contained"
-							color="warning"
-							onClick={() => setModalCreateArticle(true)}
-						>
-							Create new article
-						</Button>
-					</Box>
+		<Container>
+			<AppBreadcrumbs />
+			<Box
+				sx={{
+					display: 'flex',
+					justifyContent: 'space-between',
+					alignItems: 'center'
+				}}
+			>
+				<TitlePage text={'All Articles'} />
+				<Box>
+					<Button
+						variant="contained"
+						color="warning"
+						onClick={handleCreateArticle}
+					>
+						Create new article
+					</Button>
 				</Box>
-				<ArticleList />
-			</Container>
-
-			<ModalApp
-				title={'Create new Article'}
-				body={<CreateArticleForm />}
-				open={modalCreateArticle}
-				handleClose={() => setModalCreateArticle(false)}
-			/>
-		</>
+			</Box>
+			<ArticleList />
+		</Container>
 	)
 }
 export default ArticlesPage

@@ -1,7 +1,7 @@
-import { registerUserSchema } from '../schemas/userSchema.mjs'
+import { loginUserSchema } from '../../schemas/userSchema.mjs'
 
-export const validateRegisterUser = (req, res, next) => {
-	const { error } = registerUserSchema.validate(req.body, { abortEarly: false })
+export const validateLoginUser = (req, res, next) => {
+	const { error } = loginUserSchema.validate(req.body, { abortEarly: false })
 
 	if (error) {
 		const details = {}

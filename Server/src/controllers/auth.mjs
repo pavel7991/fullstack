@@ -4,6 +4,25 @@ import { log } from '../utils/logger.mjs'
 import bcrypt from 'bcrypt'
 import { getTokenConfig } from '../config/token.config.mjs'
 
+export const getMeHandler = async (req, res, next) => {
+	const id = req.user.id
+
+	try {
+		const user = await User.findById(id).select('-password')
+		if (!user) {
+			return res.status(404).json({ message: 'Пользователь не найден' })
+		}
+		res.status(200).json({
+			user: {
+				id: user._id,
+				username: user.username
+			}
+		})
+	} catch (err) {
+		res.status(500).json({ message: 'Ошибка сервера' })
+	}
+}
+
 export const postRegisterHandler = async (req, res, next) => {
 	const { username, email, password } = req.body
 
@@ -25,7 +44,13 @@ export const postRegisterHandler = async (req, res, next) => {
 		const newUser = new User({ username, email, password })
 		await newUser.save()
 
-		res.status(201).json({ message: `Пользователь ${username} успешно зарегистрирован!` })
+		res.status(201).json({
+			message: `Пользователь ${username} успешно зарегистрирован!`,
+			user: {
+				id: newUser._id,
+				username: newUser.username
+			}
+		})
 	} catch (err) {
 		console.error(err)
 		res.status(500).json({ message: 'Ошибка сервера' })
@@ -79,8 +104,7 @@ export const postLoginHandler = async (req, res, next) => {
 			message: 'Вход выполнен успешно',
 			user: {
 				id: user._id,
-				username: user.username,
-				email: user.email
+				username: user.username
 			}
 		})
 	} catch (err) {

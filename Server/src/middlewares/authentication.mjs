@@ -1,6 +1,5 @@
 import { getTokenConfig } from '../config/token.config.mjs'
 import { verifyToken } from '../utils/token.mjs'
-import { log } from '../utils/logger.mjs'
 
 const authentication = async (req, res, next) => {
 	const token = req.cookies.token

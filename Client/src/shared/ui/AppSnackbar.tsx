@@ -1,20 +1,23 @@
 import { Alert, Snackbar } from '@mui/material'
+import { useAppDispatch, useAppSelector } from '../../app/store/hooks.ts'
+import { hideSnackbar } from '../../features/modals/snackbarSlice.ts'
 
-interface AppSnackbarProps {
-	open: boolean
-	message: string
-	onClose: () => void
-}
+const AppSnackbar = () => {
+	const dispatch = useAppDispatch()
+	const { open, message, severity } = useAppSelector((state) => state.snackbar)
 
-const AppSnackbar = ({ open, message, onClose }: AppSnackbarProps) => {
+	const handleClose = () => {
+		dispatch(hideSnackbar())
+	}
+
 	return (
 		<Snackbar
 			open={open}
-			autoHideDuration={3000}
-			onClose={onClose}
+			autoHideDuration={4000}
+			onClose={handleClose}
 			anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
 		>
-			<Alert onClose={onClose} severity="error" variant="filled">
+			<Alert onClose={handleClose} severity={severity} variant="filled">
 				{message}
 			</Alert>
 		</Snackbar>

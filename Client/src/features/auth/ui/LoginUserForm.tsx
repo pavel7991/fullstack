@@ -4,15 +4,19 @@ import { loginValidationSchema } from '../../../schemas/auth.ts'
 import { LoginUserInterface } from '../models/types.ts'
 import FormikSubmitButton from '../../../shared/ui/form/FormikSubmitButton.tsx'
 import FormikTextField from '../../../shared/ui/form/FormikTextField.tsx'
-import { useState } from 'react'
-import AppSnackbar from '../../../shared/ui/AppSnackbar.tsx'
+import { useEffect } from 'react'
 import { loginUser } from '../models/auth.thunk.ts'
-import { useAppDispatch } from '../../../app/store/hooks.ts'
+import { useAppDispatch, useAppSelector } from '../../../app/store/hooks.ts'
 import { closeModal } from '../../modals/modalSlice.ts'
+import { showSnackbar } from '../../modals/snackbarSlice.ts'
 
 const LoginUserForm = () => {
-	const [snackbar, setSnackbar] = useState({ open: false, message: '' })
 	const dispatch = useAppDispatch()
+	const { isAuthenticated } = useAppSelector((state) => state.auth)
+
+	useEffect(() => {
+		if (isAuthenticated) dispatch(closeModal())
+	}, [isAuthenticated, dispatch])
 
 	const initialValues: LoginUserInterface = {
 		email: '',
@@ -30,8 +34,7 @@ const LoginUserForm = () => {
 		{ setErrors, setSubmitting }: FormikHelpers<LoginUserInterface>
 	) => {
 		try {
-			await dispatch(loginUser(values))
-			dispatch(closeModal())
+			await dispatch(loginUser(values)).unwrap()
 		} catch (error: unknown) {
 			const err = error as LoginErrorInterface
 			const { email, password, global } = err
@@ -41,7 +44,12 @@ const LoginUserForm = () => {
 			}
 
 			if (Array.isArray(global)) {
-				setSnackbar({ open: true, message: global.join(' ') })
+				dispatch(
+					showSnackbar({
+						message: global.join(' '),
+						severity: 'error'
+					})
+				)
 			}
 		} finally {
 			setSubmitting(false)
@@ -49,41 +57,33 @@ const LoginUserForm = () => {
 	}
 
 	return (
-		<>
-			<Formik
-				initialValues={initialValues}
-				validationSchema={loginValidationSchema}
-				onSubmit={handleSubmit}
-			>
-				{({ isSubmitting }) => (
-					<Form>
-						<Box sx={{ mt: 2 }}>
-							<FormikTextField
-								name="email"
-								type="email"
-								label="Email"
-								placeholder="Enter your email"
-							/>
-							<FormikTextField
-								name="password"
-								type="password"
-								label="Password"
-								placeholder="Enter your password"
-							/>
-							<FormikSubmitButton loading={isSubmitting}>
-								{isSubmitting ? 'Entering...' : 'Login'}
-							</FormikSubmitButton>
-						</Box>
-					</Form>
-				)}
-			</Formik>
-
-			<AppSnackbar
-				open={snackbar.open}
-				message={snackbar.message}
-				onClose={() => setSnackbar({ open: false, message: '' })}
-			/>
-		</>
+		<Formik
+			initialValues={initialValues}
+			validationSchema={loginValidationSchema}
+			onSubmit={handleSubmit}
+		>
+			{({ isSubmitting }) => (
+				<Form>
+					<Box sx={{ mt: 2 }}>
+						<FormikTextField
+							name="email"
+							type="email"
+							label="Email"
+							placeholder="Enter your email"
+						/>
+						<FormikTextField
+							name="password"
+							type="password"
+							label="Password"
+							placeholder="Enter your password"
+						/>
+						<FormikSubmitButton loading={isSubmitting}>
+							{isSubmitting ? 'Entering...' : 'Login'}
+						</FormikSubmitButton>
+					</Box>
+				</Form>
+			)}
+		</Formik>
 	)
 }
 
