@@ -7,14 +7,14 @@ interface UserInterface {
 }
 
 interface AuthStateInterface {
-	isAuthenticated: boolean
+	isAuthenticated: boolean | null
 	user: UserInterface
 	loading: boolean
 	error: string | null | object
 }
 
 const initialState: AuthStateInterface = {
-	isAuthenticated: false,
+	isAuthenticated: null,
 	loading: false,
 	user: {
 		id: null,
@@ -38,7 +38,7 @@ const authSlice = createSlice({
 	extraReducers: (builder) => {
 		builder
 			.addCase(checkAuthStatus.pending, (state) => {
-				state.isAuthenticated = false
+				state.isAuthenticated = null
 				state.loading = true
 				state.user.id = null
 				state.user.name = null

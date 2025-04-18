@@ -53,7 +53,7 @@ const Header = () => {
 							</Box>
 						)}
 
-						{!isAuthenticated && (
+						{isAuthenticated !== null && !isAuthenticated && (
 							<>
 								<Button
 									variant="outlined"

@@ -35,6 +35,12 @@ const LoginUserForm = () => {
 	) => {
 		try {
 			await dispatch(loginUser(values)).unwrap()
+			dispatch(
+				showSnackbar({
+					message: 'Login successful',
+					severity: 'success'
+				})
+			)
 		} catch (error: unknown) {
 			const err = error as LoginErrorInterface
 			const { email, password, global } = err

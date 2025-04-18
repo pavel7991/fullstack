@@ -29,7 +29,6 @@ const snackbarSlice = createSlice({
 		hideSnackbar: (state) => {
 			state.open = false
 			state.message = ''
-			state.severity = 'info'
 		}
 	}
 })
