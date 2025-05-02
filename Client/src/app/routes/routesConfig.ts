@@ -5,7 +5,7 @@ import NotFoundPage from '../../pages/notFound/NotFoundPage.tsx'
 import { ComponentType } from 'react'
 import AllUsersPage from '../../pages/users/AllUsersPage.tsx'
 import UserDetailsPage from '../../pages/users/UserDetailsPage.tsx'
-import StatisticsPage from '../../pages/ statistics/StatisticsPage.tsx'
+import StatisticsPage from '../../pages/statistics/StatisticsPage.tsx'
 
 interface routesConfig {
 	path: string
