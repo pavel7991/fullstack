@@ -1,19 +1,38 @@
-import { dataArticles, counterArticles } from '../data/dataArticles.mjs'
-import { findObjectById } from '../utils/arrayUtils.mjs'
+import mongoose, { Schema } from 'mongoose'
+import { safeFindOneById } from '../utils/dbHelpers.mjs'
 
-const getAllArticles = () => [...dataArticles].reverse()
-const getArticleById = (articleId) => findObjectById(dataArticles, articleId)
+const articlesSchema = new mongoose.Schema(
+	{
+		title: { type: String, required: true },
+		content: { type: String, required: true },
+		img: { type: String },
 
-const createArticle = ({ title, content, img }) => {
-	const newArticle = {
-		id: ++counterArticles.id,
+		author: {
+			type: Schema.Types.ObjectId,
+			ref: 'User',
+			required: true
+		}
+	},
+	{ timestamps: true }
+)
+
+const Article = mongoose.model('Article', articlesSchema)
+
+export const createArticle = async ({ title, content, img, userID }) => {
+	const newArticle = new Article({
 		title,
 		content,
-		img
-	}
-	dataArticles.push(newArticle)
+		img,
+		author: userID
+	})
+
+	await newArticle.save()
 
 	return newArticle
 }
 
-export { getAllArticles, getArticleById, createArticle }
+export const getArticleById = async (articleId) => await safeFindOneById(Article, articleId)
+export const getAllArticles = async () => await Article.find().sort({ createdAt: -1 })
+export const getArticlesByUserId = async (userId) => await Article.find({ author: userId }).sort({ createdAt: -1 })
+
+export default Article

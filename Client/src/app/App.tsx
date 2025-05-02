@@ -7,12 +7,10 @@ import AppSnackbar from '../shared/ui/AppSnackbar.tsx'
 const App = () => {
 	return (
 		<StoreProvider>
-			<AppInit />
 			<ThemeProvider>
-				<>
-					<RouterProvider />
-					<AppSnackbar />
-				</>
+				<RouterProvider />
+				<AppInit />
+				<AppSnackbar />
 			</ThemeProvider>
 		</StoreProvider>
 	)

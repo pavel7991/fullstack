@@ -8,8 +8,6 @@ import {
 	Typography
 } from '@mui/material'
 import Grid from '@mui/material/Grid2'
-import { useDispatch, useSelector } from 'react-redux'
-import { AppDispatch, RootState } from '../../app/store/store.ts'
 import { useEffect } from 'react'
 import { fetchArticles } from '../../entities/article/model/articles.thunks.ts'
 import { Article } from '../../entities/article/model/types.ts'
@@ -17,6 +15,7 @@ import { NavLink } from 'react-router-dom'
 import Loader from '../../shared/ui/Loader.tsx'
 import ErrorFetch from '../../shared/ui/ErrorFetch.tsx'
 import NoImgBg from '../../shared/ui/NoImgBg.tsx'
+import { useAppDispatch, useAppSelector } from '../../app/store/hooks.ts'
 
 const clampRows = (index: number) => {
 	return {
@@ -29,10 +28,8 @@ const clampRows = (index: number) => {
 }
 
 const ArticleList = () => {
-	const dispatch = useDispatch<AppDispatch>()
-	const { articles, loading, error } = useSelector(
-		(state: RootState) => state.articles
-	)
+	const dispatch = useAppDispatch()
+	const { articles, loading, error } = useAppSelector((state) => state.articles)
 
 	useEffect(() => {
 		dispatch(fetchArticles())
@@ -45,7 +42,7 @@ const ArticleList = () => {
 		<Grid container spacing={2} sx={{ mb: 5 }}>
 			{articles.map((article: Article) => (
 				<Grid
-					key={article.id}
+					key={article._id}
 					component={Card}
 					size={{ lg: 3, md: 4, sm: 6, xs: 12 }}
 					sx={{ display: 'flex', flexDirection: 'column' }}
@@ -82,7 +79,7 @@ const ArticleList = () => {
 					<CardActions>
 						<Button
 							component={NavLink}
-							to={`/articles/${article.id}`}
+							to={`/articles/${article._id}`}
 							size="small"
 						>
 							Learn More

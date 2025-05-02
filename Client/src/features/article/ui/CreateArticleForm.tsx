@@ -2,69 +2,81 @@ import { ChangeEvent, FormEvent, useState } from 'react'
 import { useCreateArticle } from '../models/useCreateArticle.ts'
 import { Article } from '../../../entities/article/model/types.ts'
 import { Alert, Box, Button, Link } from '@mui/material'
-import { NavLink } from 'react-router-dom'
 import Input from '../../../shared/ui/form/Input.tsx'
+import { useAppSelector } from '../../../app/store/hooks.ts'
 
 const CreateArticleForm = () => {
-  const [title, setTitle] = useState('')
-  const [content, setContent] = useState('')
-  const [img, setImg] = useState('')
-  const [createdArticle, setCreatedArticle] = useState<Article | null>(null)
+	const [title, setTitle] = useState('')
+	const [content, setContent] = useState('')
+	const [img, setImg] = useState('')
+	const userID = useAppSelector((state) => state.auth.user.id)
 
-  const { createArticle, isLoading, error } = useCreateArticle()
+	const [createdArticle, setCreatedArticle] = useState<Article | null>(null)
 
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault()
-    const article = await createArticle({ title, content, img }).catch()
+	const { createArticle, isLoading, error } = useCreateArticle()
 
-    if (article) {
-      setCreatedArticle(article)
-    }
-  }
+	const handleSubmit = async (e: FormEvent) => {
+		e.preventDefault()
+		const article = await createArticle({ title, content, img, userID }).catch()
 
-  return (
-    <div>
-      {createdArticle && (
-        <>
-          <Alert severity="success" variant="outlined">
-            <Link component={NavLink} to={`/articles/${createdArticle.id}`}>
-              {createdArticle.title}
-            </Link>{' '}
-            was add.
-          </Alert>
-        </>
-      )}
+		if (article) {
+			setCreatedArticle(article)
+		}
+	}
 
-      {!createdArticle && (
-        <Box component="form" onSubmit={handleSubmit}>
-          <Input
-            label="Name"
-            value={title}
-            onChange={(e: ChangeEvent<HTMLInputElement>) => setTitle(e.target.value)}
-            required
-          />
+	return (
+		<div>
+			{createdArticle && (
+				<Alert severity="success" variant="outlined">
+					<Link href={`/articles/${createdArticle._id}`}>
+						{createdArticle.title}
+					</Link>{' '}
+					was add.
+				</Alert>
+			)}
 
-          <Input
-            label="URL img"
-            value={img}
-            onChange={(e: ChangeEvent<HTMLInputElement>) => setImg(e.target.value)}
-          />
-          <Input
-            label="Content"
-            value={content}
-            onChange={(e: ChangeEvent<HTMLTextAreaElement>) => setContent(e.target.value)}
-            multiline
-            minRows={6}
-            required
-          />
-          {error && <Alert severity="error">{error}</Alert>}
+			{!createdArticle && (
+				<Box component="form" onSubmit={handleSubmit}>
+					<Input
+						label="Name"
+						value={title}
+						onChange={(e: ChangeEvent<HTMLInputElement>) =>
+							setTitle(e.target.value)
+						}
+						required
+					/>
 
-          <Button type="submit" variant="contained" color="warning" sx={{ mt: 2 }} fullWidth>
-            {isLoading ? 'Creating ...' : 'Create Article'}
-          </Button>
-        </Box>
-      )}
-    </div>
-  )
+					<Input
+						label="URL img"
+						value={img}
+						onChange={(e: ChangeEvent<HTMLInputElement>) =>
+							setImg(e.target.value)
+						}
+					/>
+					<Input
+						label="Content"
+						value={content}
+						onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
+							setContent(e.target.value)
+						}
+						multiline
+						minRows={6}
+						required
+					/>
+					{error && <Alert severity="error">{error}</Alert>}
+
+					<Button
+						type="submit"
+						variant="contained"
+						color="warning"
+						sx={{ mt: 2 }}
+						fullWidth
+					>
+						{isLoading ? 'Creating ...' : 'Create Article'}
+					</Button>
+				</Box>
+			)}
+		</div>
+	)
 }
 export default CreateArticleForm

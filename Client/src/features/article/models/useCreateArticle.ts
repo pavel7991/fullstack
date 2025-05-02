@@ -1,17 +1,21 @@
 import { useState } from 'react'
 import api from '../../../shared/api/axios.ts'
 import axios from 'axios'
-import { useDispatch } from 'react-redux'
-import { AppDispatch } from '../../../app/store/store.ts'
 import { addArticle } from '../../../entities/article/model/articlesSlice.ts'
 import { ArticleCreateRequest } from '../../../entities/article/model/types.ts'
+import { useAppDispatch } from '../../../app/store/hooks.ts'
 
 export const useCreateArticle = () => {
-	const dispatch = useDispatch<AppDispatch>()
+	const dispatch = useAppDispatch()
 	const [isLoading, setIsLoading] = useState(false)
 	const [error, setError] = useState('')
 
-	const createArticle = async ({ title, content, img }: ArticleCreateRequest) => {
+	const createArticle = async ({
+		title,
+		content,
+		img,
+		userID
+	}: ArticleCreateRequest) => {
 		setIsLoading(true)
 		setError('')
 
@@ -19,7 +23,8 @@ export const useCreateArticle = () => {
 			const response = await api.post('/articles', {
 				title,
 				content,
-				img
+				img,
+				userID
 			})
 
 			const createdArticle = response.data
