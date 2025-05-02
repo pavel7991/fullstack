@@ -1,8 +1,9 @@
 import {
-	Button,
+	Box,
 	Card,
 	CardActions,
 	CardContent,
+	Link,
 	Typography
 } from '@mui/material'
 import Grid from '@mui/material/Grid2'
@@ -13,21 +14,14 @@ import { NavLink } from 'react-router-dom'
 import Loader from '../../shared/ui/Loader.tsx'
 import ErrorFetch from '../../shared/ui/ErrorFetch.tsx'
 import { useAppDispatch, useAppSelector } from '../../app/store/hooks.ts'
-import ArticleImage from './ArticleImage.tsx'
-
-const clampRows = (index: number) => {
-	return {
-		display: '-webkit-box',
-		WebkitBoxOrient: 'vertical',
-		WebkitLineClamp: `${index}`,
-		overflow: 'hidden',
-		textOverflow: 'ellipsis'
-	}
-}
+import ArticleImage from '../../shared/ui/ArticleImage.tsx'
+import { useClampText } from '../../shared/hooks/useClampText.ts'
 
 const ArticleList = () => {
 	const dispatch = useAppDispatch()
 	const { articles, loading, error } = useAppSelector((state) => state.articles)
+	const clampTitle = useClampText(2)
+	const clampContent = useClampText(4)
 
 	useEffect(() => {
 		dispatch(fetchArticles())
@@ -52,12 +46,12 @@ const ArticleList = () => {
 						height={{ xs: 240, sm: 240 }}
 					/>
 
-					<CardContent sx={{ flexGrow: 1 }}>
+					<CardContent sx={{ flexGrow: 1, px: 2 }}>
 						<Typography
 							component="h3"
 							variant="h5"
 							gutterBottom
-							sx={clampRows(2)}
+							sx={clampTitle}
 						>
 							{article.title}
 						</Typography>
@@ -65,19 +59,39 @@ const ArticleList = () => {
 						<Typography
 							variant="body2"
 							color="text.secondary"
-							sx={clampRows(4)}
+							sx={clampContent}
 						>
 							{article.content}
 						</Typography>
 					</CardContent>
-					<CardActions>
-						<Button
-							component={NavLink}
-							to={`/articles/${article._id}`}
-							size="small"
+					<CardActions sx={{ px: 2 }}>
+						<Box
+							sx={{
+								display: 'flex',
+								alignItems: 'center',
+								gap: '3px',
+								width: '100%'
+							}}
 						>
-							Learn More
-						</Button>
+							<Typography variant="caption" color="text.secondary">
+								By:
+							</Typography>
+							<Link
+								component={NavLink}
+								to={`/users/${article.author._id}`}
+								color="primary"
+								sx={{ fontSize: '0.9rem' }}
+							>
+								{article.author.username}
+							</Link>
+							<Typography
+								variant="caption"
+								color="text.secondary"
+								sx={{ marginLeft: 'auto' }}
+							>
+								{new Date(article.createdAt).toLocaleDateString()}
+							</Typography>
+						</Box>
 					</CardActions>
 				</Grid>
 			))}

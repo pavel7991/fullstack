@@ -1,3 +1,5 @@
+import { User } from '../../user/model/types.ts'
+
 export interface ArticleCreateRequest {
 	title: string
 	content: string
@@ -7,6 +9,9 @@ export interface ArticleCreateRequest {
 
 export interface Article extends ArticleCreateRequest {
 	_id: string
+	createdAt: string
+	updatedAt: string
+	author: User
 }
 
 export interface ArticleState {

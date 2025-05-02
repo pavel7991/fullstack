@@ -1,7 +1,8 @@
 import React from 'react'
 import { Card, CardContent, Typography, Stack, Link } from '@mui/material'
 import { NavLink } from 'react-router-dom'
-import ArticleImage from './ArticleImage.tsx'
+import ArticleImage from '../../shared/ui/ArticleImage.tsx'
+import { useClampText } from '../../shared/hooks/useClampText.ts'
 
 type Article = {
 	_id: string
@@ -16,6 +17,8 @@ type ArticlesListRowProps = {
 }
 
 const ArticlesListRow: React.FC<ArticlesListRowProps> = ({ articles }) => {
+	const clampStyles = useClampText(5)
+
 	return (
 		<Stack spacing={2} sx={{ padding: 2 }}>
 			{articles.map((article) => (
@@ -46,7 +49,7 @@ const ArticlesListRow: React.FC<ArticlesListRowProps> = ({ articles }) => {
 						>
 							{article.title}
 						</Link>
-						<Typography variant="body2" color="text.secondary">
+						<Typography variant="body2" color="text.secondary" sx={clampStyles}>
 							{article.content}
 						</Typography>
 						{article.createdAt && (
