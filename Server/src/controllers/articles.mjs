@@ -1,4 +1,4 @@
-import { createArticle, getAllArticles, getArticleById, getArticlesStats } from '../models/articles.mjs'
+import Article, { createArticle, getAllArticles, getArticleById, getArticlesStats } from '../models/articles.mjs'
 import { log } from '../utils/logger.mjs'
 
 export const getArticlesHandler = async (req, res) => {
@@ -30,5 +30,33 @@ export const getArticlesStatsHandler = async (req, res) => {
 		res.status(200).json(stats)
 	} catch (error) {
 		res.status(500).json({ message: 'Failed to fetch article stats' })
+	}
+}
+
+export const getArticlesCursorHandler = async (req, res) => {
+	try {
+		const limit = parseInt(req.query.limit) || 5
+		const cursor = req.query.cursor
+
+		const query = {}
+		if (cursor) {
+			query._id = { $lt: cursor }
+		}
+		const articles = await Article.find(query)
+			.sort({ createdAt: -1 })
+			.limit(limit + 1)
+			.populate('author', 'username _id')
+
+		const hasNextPage = articles.length > limit
+		if (hasNextPage) articles.pop()
+
+		const nextCursor = hasNextPage ? articles[articles.length - 1]._id : null
+
+		res.status(200).json({
+			articles,
+			nextCursor
+		})
+	} catch (error) {
+		res.status(500).json({ message: 'Failed to fetch articles', error })
 	}
 }

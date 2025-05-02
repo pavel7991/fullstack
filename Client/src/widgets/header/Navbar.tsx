@@ -36,6 +36,9 @@ const Navbar = () => {
 			<ListItem>
 				<StyledLink to="/statistics">Statistics</StyledLink>
 			</ListItem>
+			<ListItem>
+				<StyledLink to="/articles/cursor">Cursor</StyledLink>
+			</ListItem>
 		</List>
 	)
 }

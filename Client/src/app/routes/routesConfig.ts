@@ -6,6 +6,7 @@ import { ComponentType } from 'react'
 import AllUsersPage from '../../pages/users/AllUsersPage.tsx'
 import UserDetailsPage from '../../pages/users/UserDetailsPage.tsx'
 import StatisticsPage from '../../pages/statistics/StatisticsPage.tsx'
+import ArticlesCursor from '../../pages/articles/ArticlesCursor.tsx'
 
 interface routesConfig {
 	path: string
@@ -19,6 +20,10 @@ export const routesConfig: routesConfig[] = [
 	{
 		path: '/articles/:id',
 		Component: ArticleDetailsPage
+	},
+	{
+		path: '/articles/cursor',
+		Component: ArticlesCursor
 	},
 	{
 		path: '/users',
