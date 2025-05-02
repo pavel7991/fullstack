@@ -33,6 +33,9 @@ const Navbar = () => {
 			<ListItem>
 				<StyledLink to="/articles">Articles</StyledLink>
 			</ListItem>
+			<ListItem>
+				<StyledLink to="/statistics">Statistics</StyledLink>
+			</ListItem>
 		</List>
 	)
 }

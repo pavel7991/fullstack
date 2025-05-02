@@ -1,10 +1,8 @@
 import {
-	Box,
 	Button,
 	Card,
 	CardActions,
 	CardContent,
-	CardMedia,
 	Typography
 } from '@mui/material'
 import Grid from '@mui/material/Grid2'
@@ -14,8 +12,8 @@ import { Article } from '../../entities/article/model/types.ts'
 import { NavLink } from 'react-router-dom'
 import Loader from '../../shared/ui/Loader.tsx'
 import ErrorFetch from '../../shared/ui/ErrorFetch.tsx'
-import NoImgBg from '../../shared/ui/NoImgBg.tsx'
 import { useAppDispatch, useAppSelector } from '../../app/store/hooks.ts'
+import ArticleImage from './ArticleImage.tsx'
 
 const clampRows = (index: number) => {
 	return {
@@ -47,16 +45,12 @@ const ArticleList = () => {
 					size={{ lg: 3, md: 4, sm: 6, xs: 12 }}
 					sx={{ display: 'flex', flexDirection: 'column' }}
 				>
-					{article?.img?.trim() ? (
-						<CardMedia
-							component="img"
-							alt={article.title}
-							height="240"
-							image={article.img}
-						/>
-					) : (
-						<Box component={NoImgBg} sx={{ flexBasis: '240px' }} />
-					)}
+					<ArticleImage
+						img={article.img}
+						title={article.title}
+						width={{ xs: '100%', sm: '100%' }}
+						height={{ xs: 240, sm: 240 }}
+					/>
 
 					<CardContent sx={{ flexGrow: 1 }}>
 						<Typography

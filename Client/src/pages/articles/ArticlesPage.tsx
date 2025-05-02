@@ -1,4 +1,4 @@
-import ArticleList from '../../widgets/ArticlesList/ArticleList.tsx'
+import ArticleList from '../../widgets/articles/ArticleList.tsx'
 import { Box, Button, Container } from '@mui/material'
 import TitlePage from '../../shared/ui/TitlePage.tsx'
 import { AppBreadcrumbs } from '../../shared/ui/AppBreadcrumbs.tsx'

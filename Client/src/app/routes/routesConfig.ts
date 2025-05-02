@@ -5,6 +5,7 @@ import NotFoundPage from '../../pages/notFound/NotFoundPage.tsx'
 import { ComponentType } from 'react'
 import AllUsersPage from '../../pages/users/AllUsersPage.tsx'
 import UserDetailsPage from '../../pages/users/UserDetailsPage.tsx'
+import StatisticsPage from '../../pages/ statistics/StatisticsPage.tsx'
 
 interface routesConfig {
 	path: string
@@ -28,6 +29,11 @@ export const routesConfig: routesConfig[] = [
 		path: '/users/:id',
 		label: 'User Details',
 		Component: UserDetailsPage
+	},
+	{
+		path: '/statistics',
+		label: 'Blog Statistics',
+		Component: StatisticsPage
 	},
 	{ path: '*', label: '404 - Page Not Found', Component: NotFoundPage }
 ]

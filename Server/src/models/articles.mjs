@@ -35,4 +35,34 @@ export const getArticleById = async (articleId) => await safeFindOneById(Article
 export const getAllArticles = async () => await Article.find().sort({ createdAt: -1 })
 export const getArticlesByUserId = async (userId) => await Article.find({ author: userId }).sort({ createdAt: -1 })
 
+export const getArticlesStats = async () => {
+	const stats = await Article.aggregate([
+		{
+			$group: {
+				_id: null,
+				totalArticles: { $sum: 1 },
+				avgContentLength: { $avg: { $strLenCP: '$content' } },
+				minContentLength: { $min: { $strLenCP: '$content' } },
+				maxContentLength: { $max: { $strLenCP: '$content' } },
+				uniqueAuthors: { $addToSet: '$author' },
+				latestArticleDate: { $max: '$createdAt' },
+				oldestArticleDate: { $min: '$createdAt' }
+			}
+		},
+		{
+			$project: {
+				_id: 0,
+				totalArticles: 1,
+				avgContentLength: 1,
+				minContentLength: 1,
+				maxContentLength: 1,
+				uniqueAuthorsCount: { $size: '$uniqueAuthors' },
+				latestArticleDate: 1,
+				oldestArticleDate: 1
+			}
+		}
+	])
+	return stats[0] || {}
+}
+
 export default Article

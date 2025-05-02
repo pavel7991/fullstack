@@ -1,4 +1,4 @@
-import { createArticle, getAllArticles, getArticleById } from '../models/articles.mjs'
+import { createArticle, getAllArticles, getArticleById, getArticlesStats } from '../models/articles.mjs'
 import { log } from '../utils/logger.mjs'
 
 export const getArticlesHandler = async (req, res) => {
@@ -23,5 +23,14 @@ export const postArticleHandler = async (req, res, next) => {
 	} catch (error) {
 		console.error(error)
 		res.status(500).json({ error: 'Failed to create article' })
+	}
+}
+
+export const getArticlesStatsHandler = async (req, res) => {
+	try {
+		const stats = await getArticlesStats()
+		res.status(200).json(stats)
+	} catch (error) {
+		res.status(500).json({ message: 'Failed to fetch article stats' })
 	}
 }

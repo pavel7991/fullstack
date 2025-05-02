@@ -1,13 +1,7 @@
 import React from 'react'
-import {
-	Card,
-	CardContent,
-	CardMedia,
-	Typography,
-	Stack,
-	Link
-} from '@mui/material'
+import { Card, CardContent, Typography, Stack, Link } from '@mui/material'
 import { NavLink } from 'react-router-dom'
+import ArticleImage from './ArticleImage.tsx'
 
 type Article = {
 	_id: string
@@ -35,18 +29,13 @@ const ArticlesListRow: React.FC<ArticlesListRowProps> = ({ articles }) => {
 						borderRadius: 2
 					}}
 				>
-					{article.img && (
-						<CardMedia
-							component="img"
-							image={article.img}
-							alt={article.title}
-							sx={{
-								width: { xs: '100%', sm: 250 },
-								height: { xs: 200, sm: 'auto' },
-								objectFit: 'cover'
-							}}
-						/>
-					)}
+					<ArticleImage
+						img={article.img}
+						title={article.title}
+						width={{ xs: '100%', sm: 250 }}
+						height={{ xs: 200, sm: 'auto' }}
+						minHeight={{ sm: 200 }}
+					/>
 
 					<CardContent sx={{ flex: 1 }}>
 						<Link

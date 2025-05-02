@@ -1,33 +1,13 @@
-import { Container, Link } from '@mui/material'
-
+import { Container, Link, List, ListItem } from '@mui/material'
 import { AppBreadcrumbs } from '../../shared/ui/AppBreadcrumbs.tsx'
 import TitlePage from '../../shared/ui/TitlePage.tsx'
-import { useEffect, useState } from 'react'
-import api from '../../shared/api/axios.ts'
 import Loader from '../../shared/ui/Loader.tsx'
 import ErrorFetch from '../../shared/ui/ErrorFetch.tsx'
 import { NavLink } from 'react-router-dom'
+import { useUsers } from '../../entities/user/model/hooks.ts'
 
 const AllUsersPage = () => {
-	const [users, setUsers] = useState([])
-	const [loading, setLoading] = useState(true)
-	const [error, setError] = useState<null | string>(null)
-
-	useEffect(() => {
-		const fetchUsers = async () => {
-			try {
-				const response = await api.get('/users')
-				setUsers(response.data)
-			} catch (error) {
-				console.error(error)
-				setError('Error fetching users')
-			} finally {
-				setLoading(false)
-			}
-		}
-
-		fetchUsers().catch()
-	}, [])
+	const { users, loading, error } = useUsers()
 
 	if (loading) return <Loader />
 	if (error)
@@ -43,15 +23,16 @@ const AllUsersPage = () => {
 			<AppBreadcrumbs />
 			<TitlePage text={'All Users'} />
 
-			<ul>
-				{users.map((user) => (
-					<li key={user._id}>
+			<List>
+				{users.map((user, index) => (
+					<ListItem key={user._id}>
 						<Link component={NavLink} to={`/users/${user._id}`}>
+							{`${++index}. `}
 							{user.username}
 						</Link>
-					</li>
+					</ListItem>
 				))}
-			</ul>
+			</List>
 		</Container>
 	)
 }
