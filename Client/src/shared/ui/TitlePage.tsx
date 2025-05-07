@@ -8,7 +8,7 @@ type TitlePageProps = {
 
 const TitlePage = ({ text, component = 'h1' }: TitlePageProps) => {
 	return (
-		<Typography variant="h4" component={component} sx={{ my: 5, mb: 3 }}>
+		<Typography variant="h4" component={component} sx={{ mt: 5, mb: 3 }}>
 			{text}
 		</Typography>
 	)

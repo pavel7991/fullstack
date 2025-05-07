@@ -23,7 +23,6 @@ const UserDetailsPage = () => {
 	return (
 		<Container>
 			<AppBreadcrumbs />
-			<TitlePage text={'User Info'} />
 
 			{user && <UserInfo user={user} />}
 			{articles.length > 0 && (
