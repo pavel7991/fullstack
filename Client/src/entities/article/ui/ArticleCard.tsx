@@ -1,6 +1,6 @@
-import { Card, CardContent, Typography } from '@mui/material'
+import { Card, CardContent, Grid, Typography } from '@mui/material'
 import { Article } from '../model/types'
-import Grid from '@mui/material/Grid2'
+
 import ArticleImage from '../../../shared/ui/ArticleImage.tsx'
 
 interface ArticleCardProps {

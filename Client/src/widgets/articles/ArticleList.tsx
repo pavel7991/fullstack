@@ -4,9 +4,9 @@ import {
 	CardActions,
 	CardContent,
 	Link,
-	Typography
+	Typography,
+	Grid
 } from '@mui/material'
-import Grid from '@mui/material/Grid2'
 import { useEffect } from 'react'
 import { fetchArticles } from '../../entities/article/model/articles.thunks.ts'
 import { Article } from '../../entities/article/model/types.ts'

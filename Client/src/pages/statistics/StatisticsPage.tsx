@@ -1,10 +1,19 @@
-import { Container, Stack, Typography } from '@mui/material'
+import { Box, Container, Typography, Grid } from '@mui/material'
 import TitlePage from '../../shared/ui/TitlePage.tsx'
 import { useEffect, useState } from 'react'
 import api from '../../shared/api/axios.ts'
 import Loader from '../../shared/ui/Loader.tsx'
 import ErrorFetch from '../../shared/ui/ErrorFetch.tsx'
 import { AxiosError } from 'axios'
+import { Paper } from '@mui/material'
+import BarChartIcon from '@mui/icons-material/BarChart'
+import PersonOutlineIcon from '@mui/icons-material/PersonOutline'
+import ArticleIcon from '@mui/icons-material/Article'
+import FormatSizeIcon from '@mui/icons-material/FormatSize'
+import CalendarTodayIcon from '@mui/icons-material/CalendarToday'
+import UpdateIcon from '@mui/icons-material/Update'
+import TrendingUpIcon from '@mui/icons-material/TrendingUp'
+import TrendingDownIcon from '@mui/icons-material/TrendingDown'
 
 interface Stats {
 	uniqueAuthorsCount: number
@@ -45,23 +54,144 @@ const StatisticsPage = () => {
 			{error && <ErrorFetch error={error} />}
 			{!stats && !error && <Loader />}
 			{stats && (
-				<Stack spacing={1} sx={{ mb: 2 }}>
-					<Typography> Total Authors: {stats.uniqueAuthorsCount}</Typography>
-					<Typography>Total articles: {stats.totalArticles}</Typography>
-					<Typography>Max content length: {stats.maxContentLength}</Typography>
-					<Typography>Min content length: {stats.minContentLength}</Typography>
-					<Typography>
-						Average content length: {stats.avgContentLength}
+				<Paper elevation={3} sx={{ p: 3, mb: 4, borderRadius: 2 }}>
+					<Typography
+						variant="h6"
+						component="h3"
+						sx={{ mb: 3, display: 'flex', alignItems: 'center' }}
+					>
+						<BarChartIcon color="primary" sx={{ mr: 1 }} />
+						Statistics
 					</Typography>
-					<Typography>
-						Oldest Articles Date:{' '}
-						{new Date(stats.oldestArticleDate).toLocaleDateString()}
-					</Typography>
-					<Typography>
-						Latest Articles Date{' '}
-						{new Date(stats.latestArticleDate).toLocaleDateString()}
-					</Typography>
-				</Stack>
+
+					<Grid container spacing={2}>
+						<Grid>
+							<Paper
+								elevation={0}
+								sx={{
+									p: 2,
+									backgroundColor: 'warning.light',
+									color: 'white'
+								}}
+							>
+								<Typography variant="subtitle2">Authors:</Typography>
+								<Typography variant="h4" sx={{ fontWeight: 'bold' }}>
+									{stats.uniqueAuthorsCount}
+									<PersonOutlineIcon sx={{ ml: 1, verticalAlign: 'middle' }} />
+								</Typography>
+							</Paper>
+						</Grid>
+
+						<Grid>
+							<Paper
+								elevation={0}
+								sx={{
+									p: 2,
+									backgroundColor: 'warning.dark',
+									color: 'white'
+								}}
+							>
+								<Typography variant="subtitle2">Articles:</Typography>
+								<Typography variant="h4" sx={{ fontWeight: 'bold' }}>
+									{stats.totalArticles}
+									<ArticleIcon sx={{ ml: 1, verticalAlign: 'middle' }} />
+								</Typography>
+							</Paper>
+						</Grid>
+						<Grid>
+							<Paper
+								elevation={0}
+								sx={{ p: 2, backgroundColor: 'info.light', color: 'white' }}
+							>
+								<Typography variant="subtitle2">
+									Average content length:
+								</Typography>
+								<Typography variant="h4" sx={{ fontWeight: 'bold' }}>
+									{stats.avgContentLength.toFixed(1)}
+									<FormatSizeIcon sx={{ ml: 1, verticalAlign: 'middle' }} />
+								</Typography>
+							</Paper>
+						</Grid>
+					</Grid>
+
+					<Grid container spacing={2} sx={{ mt: 3 }}>
+						<Grid>
+							<Paper
+								elevation={0}
+								sx={{ p: 2, backgroundColor: 'background.default' }}
+							>
+								<Typography variant="body1">
+									<TrendingUpIcon
+										color="success"
+										sx={{ mr: 1, verticalAlign: 'bottom' }}
+									/>
+									Max content length: {stats.maxContentLength} symbols.
+								</Typography>
+							</Paper>
+						</Grid>
+
+						<Grid>
+							<Paper
+								elevation={0}
+								sx={{ p: 2, backgroundColor: 'background.default' }}
+							>
+								<Typography variant="body1">
+									<TrendingDownIcon
+										color="error"
+										sx={{ mr: 1, verticalAlign: 'bottom' }}
+									/>
+									Min content length: {stats.minContentLength} symbols.
+								</Typography>
+							</Paper>
+						</Grid>
+					</Grid>
+
+					<Grid container spacing={2} sx={{ mt: 3 }}>
+						<Grid>
+							<Paper
+								elevation={0}
+								sx={{
+									p: 2,
+									borderLeft: '4px solid',
+									borderColor: 'success.main'
+								}}
+							>
+								<Typography
+									variant="body1"
+									sx={{ display: 'flex', alignItems: 'center' }}
+								>
+									<CalendarTodayIcon color="action" sx={{ mr: 1 }} />
+									<Box component="span" sx={{ fontWeight: 'medium', pr: 1 }}>
+										Oldest Articles Date:
+									</Box>
+									{new Date(stats.oldestArticleDate).toLocaleDateString()}
+								</Typography>
+							</Paper>
+						</Grid>
+
+						<Grid>
+							<Paper
+								elevation={0}
+								sx={{
+									p: 2,
+									borderLeft: '4px solid',
+									borderColor: 'warning.main'
+								}}
+							>
+								<Typography
+									variant="body1"
+									sx={{ display: 'flex', alignItems: 'center' }}
+								>
+									<UpdateIcon color="action" sx={{ mr: 1 }} />
+									<Box component="span" sx={{ fontWeight: 'medium', pr: 1 }}>
+										Latest Articles Date:
+									</Box>
+									{new Date(stats.latestArticleDate).toLocaleDateString()}
+								</Typography>
+							</Paper>
+						</Grid>
+					</Grid>
+				</Paper>
 			)}
 		</Container>
 	)
