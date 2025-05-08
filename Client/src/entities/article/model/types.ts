@@ -19,4 +19,5 @@ export interface ArticleState {
 	selectedArticle: Article | null
 	loading: boolean
 	error: string | null
+	isOwner: boolean | null
 }

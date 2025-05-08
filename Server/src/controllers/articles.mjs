@@ -1,4 +1,10 @@
-import { createArticle, getAllArticles, getArticleById, getArticlesStats } from '../models/articles.mjs'
+import {
+	createArticle,
+	deleteArticleById,
+	getAllArticles,
+	getArticleById,
+	getArticlesStats
+} from '../models/articles.mjs'
 import { log } from '../utils/logger.mjs'
 
 export const getArticlesHandler = async (req, res) => {
@@ -9,7 +15,36 @@ export const getArticlesHandler = async (req, res) => {
 export const getArticlesByIdHandler = async (req, res) => {
 	const { articleId } = req.params
 	const article = await getArticleById(articleId)
-	res.status(200).json(article)
+
+	if (!article) {
+		return res.status(404).json({ message: 'Article not found' })
+	}
+
+	let isOwner = false
+	if (req.user) {
+		isOwner = article.author.toString?.() === req.user.id.toString?.()
+	}
+
+	res.status(200).json({ article, isOwner })
+}
+
+export const deleteArticleByIdHandler = async (req, res) => {
+	try {
+		const { articleId } = req.params
+		const article = await getArticleById(articleId)
+		if (!article) {
+			return res.status(404).json({ message: 'Article not found' })
+		}
+
+		if (article.author.toString() !== req.user.id) {
+			return res.status(403).json({ message: 'You are not authorized to delete this article' })
+		}
+
+		await deleteArticleById(articleId)
+		res.status(200).json({ message: 'Article deleted successfully' })
+	} catch (error) {
+		res.status(500).json({ message: 'Failed to delete article' })
+	}
 }
 
 export const postArticleHandler = async (req, res, next) => {

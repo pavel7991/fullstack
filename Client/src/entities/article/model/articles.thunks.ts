@@ -21,18 +21,36 @@ export const fetchArticles = createAsyncThunk<Article[], void>(
 )
 
 // ! GET Article by ID
-export const fetchArticleById = createAsyncThunk<Article, string>(
-	'articles/fetchArticleById',
-	async (id: string, thunkAPI) => {
-		try {
-			const response = await api.get(`/articles/${id}`)
-			return response.data
-		} catch (error: unknown) {
-			if (error instanceof AxiosError) {
-				const message = error.message || 'Failed to fetch article by ID'
-				return thunkAPI.rejectWithValue(message)
-			}
-			return thunkAPI.rejectWithValue('Reject')
+export const fetchArticleById = createAsyncThunk<
+	{ article: Article; isOwner: boolean },
+	string
+>('articles/fetchArticleById', async (id: string, thunkAPI) => {
+	try {
+		const response = await api.get(`/articles/${id}`)
+		return response.data
+	} catch (error: unknown) {
+		if (error instanceof AxiosError) {
+			const message = error.message || 'Failed to fetch article by ID'
+			return thunkAPI.rejectWithValue(message)
 		}
+		return thunkAPI.rejectWithValue('Reject')
 	}
-)
+})
+
+// ! DELETE Article by ID
+
+export const deleteArticleById = createAsyncThunk<
+	void,
+	string,
+	{ rejectValue: string }
+>('articles/deleteArticleById', async (id, thunkAPI) => {
+	try {
+		await api.delete(`/articles/${id}`)
+	} catch (error: unknown) {
+		if (error instanceof AxiosError) {
+			const message = error.message || 'Failed to delete article'
+			return thunkAPI.rejectWithValue(message)
+		}
+		return thunkAPI.rejectWithValue('Reject')
+	}
+})

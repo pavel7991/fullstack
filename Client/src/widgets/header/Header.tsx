@@ -5,6 +5,17 @@ import { logoutUser } from '../../features/auth/models/auth.thunk.ts'
 
 import { useAppDispatch, useAppSelector } from '../../app/store/hooks.ts'
 import { openModal } from '../../features/modals/modalSlice.ts'
+import { NavLink } from 'react-router-dom'
+import { styled } from '@mui/material/styles'
+
+const StyledNavLink = styled(NavLink)(({ theme }) => ({
+	color: theme.palette.text.primary,
+	textDecoration: 'none',
+	'&:hover': {
+		textDecoration: 'underline',
+		color: theme.palette.primary.main
+	}
+}))
 
 const Header = () => {
 	const { isAuthenticated, user } = useAppSelector((state) => state.auth)
@@ -41,7 +52,11 @@ const Header = () => {
 									justifyContent: 'center'
 								}}
 							>
-								<Typography>{user.name}</Typography>
+								<Typography>
+									<StyledNavLink to={`/users/${user.id}`}>
+										{user.name}
+									</StyledNavLink>
+								</Typography>
 								<Button
 									variant="outlined"
 									color="inherit"

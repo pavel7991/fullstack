@@ -32,6 +32,7 @@ export const createArticle = async ({ title, content, img, userID }) => {
 }
 
 export const getArticleById = async (articleId) => await safeFindOneById(Article, articleId)
+export const deleteArticleById = async (articleId) => await Article.findByIdAndDelete(articleId)
 
 export const getAllArticles = async () => {
 	return await Article.find().populate('author', 'username _id').sort({ createdAt: -1 })

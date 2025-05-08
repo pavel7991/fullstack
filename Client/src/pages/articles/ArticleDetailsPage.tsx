@@ -1,28 +1,33 @@
 import { useParams } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
-import { Container, Typography } from '@mui/material'
+import { Button, Container, Typography } from '@mui/material'
 import { useEffect } from 'react'
-import { fetchArticleById } from '../../entities/article/model/articles.thunks.ts'
-import { AppDispatch, RootState } from '../../app/store/store.ts'
+import {
+	deleteArticleById,
+	fetchArticleById
+} from '../../entities/article/model/articles.thunks.ts'
 import ArticleCard from '../../entities/article/ui/ArticleCard.tsx'
 import Loader from '../../shared/ui/Loader.tsx'
 import ErrorFetch from '../../shared/ui/ErrorFetch.tsx'
 import { AppBreadcrumbs } from '../../shared/ui/AppBreadcrumbs.tsx'
+import { useAppDispatch, useAppSelector } from '../../app/store/hooks.ts'
 
 const ArticleDetailsPage = () => {
 	const { id } = useParams()
-	const dispatch = useDispatch<AppDispatch>()
+	const dispatch = useAppDispatch()
 	const {
 		selectedArticle: article,
 		loading,
-		error
-	} = useSelector((state: RootState) => state.articles)
+		error,
+		isOwner
+	} = useAppSelector((state) => state.articles)
+
+	const { user } = useAppSelector((state) => state.auth)
 
 	useEffect(() => {
 		if (id) {
 			dispatch(fetchArticleById(id))
 		}
-	}, [id, dispatch])
+	}, [id, user, dispatch])
 
 	if (loading) return <Loader />
 	if (error) return <ErrorFetch error={error} />
@@ -39,6 +44,16 @@ const ArticleDetailsPage = () => {
 		<Container>
 			<AppBreadcrumbs currentPathName={article.title} />
 			<ArticleCard article={article} />
+
+			{isOwner && (
+				<Button
+					variant="contained"
+					color="error"
+					onClick={() => dispatch(deleteArticleById(article._id))}
+				>
+					Delete article
+				</Button>
+			)}
 		</Container>
 	)
 }

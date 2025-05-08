@@ -1,12 +1,17 @@
 import { Article, ArticleState } from './types.ts'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { fetchArticleById, fetchArticles } from './articles.thunks.ts'
+import {
+	deleteArticleById,
+	fetchArticleById,
+	fetchArticles
+} from './articles.thunks.ts'
 
 const initialState: ArticleState = {
 	articles: [],
 	selectedArticle: null,
 	loading: false,
-	error: null
+	error: null,
+	isOwner: false
 }
 
 const articlesSlice = createSlice({
@@ -19,6 +24,8 @@ const articlesSlice = createSlice({
 	},
 	extraReducers: (builder) => {
 		builder
+
+			// * GET All articles
 			.addCase(fetchArticles.pending, (state) => {
 				state.loading = true
 				state.error = null
@@ -35,21 +42,33 @@ const articlesSlice = createSlice({
 				state.error = action.payload as string
 			})
 
-			// * Get Article by ID
+			// * GET Article by ID
 			.addCase(fetchArticleById.pending, (state) => {
 				state.loading = true
 				state.error = null
+				state.isOwner = false
 			})
 			.addCase(
 				fetchArticleById.fulfilled,
-				(state, action: PayloadAction<Article>) => {
+				(
+					state,
+					action: PayloadAction<{ article: Article; isOwner: boolean }>
+				) => {
 					state.loading = false
-					state.selectedArticle = action.payload
+					state.selectedArticle = action.payload.article
+					state.isOwner = action.payload.isOwner
 				}
 			)
 			.addCase(fetchArticleById.rejected, (state, action) => {
 				state.loading = false
 				state.error = action.payload as string
+				state.isOwner = false
+			})
+
+			// * DELETE Article by ID
+			.addCase(deleteArticleById.fulfilled, (state) => {
+				state.selectedArticle = null
+				state.isOwner = false
 			})
 	}
 })

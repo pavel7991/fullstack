@@ -16,6 +16,15 @@ import ErrorFetch from '../../shared/ui/ErrorFetch.tsx'
 import { useAppDispatch, useAppSelector } from '../../app/store/hooks.ts'
 import ArticleImage from '../../shared/ui/ArticleImage.tsx'
 import { useClampText } from '../../shared/hooks/useClampText.ts'
+import { styled } from '@mui/material/styles'
+
+const StyledNavLink = styled(NavLink)({
+	color: 'inherit',
+	textDecoration: 'none',
+	'&:hover': {
+		textDecoration: 'underline'
+	}
+})
 
 const ArticleList = () => {
 	const dispatch = useAppDispatch()
@@ -50,10 +59,13 @@ const ArticleList = () => {
 						<Typography
 							component="h3"
 							variant="h5"
+							color="primary.main"
 							gutterBottom
 							sx={clampTitle}
 						>
-							{article.title}
+							<StyledNavLink to={`/articles/${article._id}`}>
+								{article.title}
+							</StyledNavLink>
 						</Typography>
 
 						<Typography
