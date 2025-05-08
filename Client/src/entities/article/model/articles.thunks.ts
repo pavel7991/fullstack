@@ -1,7 +1,8 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import api from '../../../shared/api/axios.ts'
 import { AxiosError } from 'axios'
-import { Article } from './types.ts'
+import { Article, ArticleUpdateRequest } from './types.ts'
+import { updateArticleRequest } from '../../../features/article/models/api.ts'
 
 // !GET All articles
 export const fetchArticles = createAsyncThunk<Article[], void>(
@@ -49,6 +50,24 @@ export const deleteArticleById = createAsyncThunk<
 	} catch (error: unknown) {
 		if (error instanceof AxiosError) {
 			const message = error.message || 'Failed to delete article'
+			return thunkAPI.rejectWithValue(message)
+		}
+		return thunkAPI.rejectWithValue('Reject')
+	}
+})
+
+// ! PUT Article by ID
+
+export const updateArticleById = createAsyncThunk<
+	{ article: Article; message: string },
+	{ id: string; data: ArticleUpdateRequest },
+	{ rejectValue: string }
+>('articles/updateArticleById', async ({ id, data }, thunkAPI) => {
+	try {
+		return await updateArticleRequest(id, data)
+	} catch (error: unknown) {
+		if (error instanceof AxiosError) {
+			const message = error.message || 'Failed to update article'
 			return thunkAPI.rejectWithValue(message)
 		}
 		return thunkAPI.rejectWithValue('Reject')

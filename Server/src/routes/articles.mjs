@@ -4,7 +4,8 @@ import {
 	getArticlesByIdHandler,
 	getArticlesHandler,
 	getArticlesStatsHandler,
-	postArticleHandler
+	postArticleHandler,
+	putArticleByIdHandler
 } from '../controllers/articles.mjs'
 import authentication from '../middlewares/authentication.mjs'
 import { optionalAuthentication } from '../middlewares/optionalAuthentication .mjs'
@@ -17,5 +18,6 @@ articlesRouter
 	.route('/:articleId')
 	.get(optionalAuthentication, getArticlesByIdHandler)
 	.delete(authentication, deleteArticleByIdHandler)
+	.put(authentication, putArticleByIdHandler)
 
 export default articlesRouter

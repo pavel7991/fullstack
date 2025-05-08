@@ -3,7 +3,8 @@ import {
 	deleteArticleById,
 	getAllArticles,
 	getArticleById,
-	getArticlesStats
+	getArticlesStats,
+	updateArticleById
 } from '../models/articles.mjs'
 import { log } from '../utils/logger.mjs'
 
@@ -44,6 +45,26 @@ export const deleteArticleByIdHandler = async (req, res) => {
 		res.status(200).json({ message: 'Article deleted successfully' })
 	} catch (error) {
 		res.status(500).json({ message: 'Failed to delete article' })
+	}
+}
+
+export const putArticleByIdHandler = async (req, res) => {
+	try {
+		const { articleId } = req.params
+		const body = req.body
+		const article = await getArticleById(articleId)
+
+		if (!article) {
+			return res.status(404).json({ message: 'Article not found' })
+		}
+		if (!req.user || article.author.toString() !== req.user.id) {
+			return res.status(403).json({ message: 'You are not authorized to update this article' })
+		}
+
+		const updatedArticle = await updateArticleById(articleId, body)
+		res.status(200).json({ message: 'Article updated successfully', article: updatedArticle })
+	} catch (error) {
+		res.status(500).json({ message: 'Failed to update article' })
 	}
 }
 

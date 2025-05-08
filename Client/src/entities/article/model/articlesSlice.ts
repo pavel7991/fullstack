@@ -3,7 +3,8 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import {
 	deleteArticleById,
 	fetchArticleById,
-	fetchArticles
+	fetchArticles,
+	updateArticleById
 } from './articles.thunks.ts'
 
 const initialState: ArticleState = {
@@ -69,6 +70,20 @@ const articlesSlice = createSlice({
 			.addCase(deleteArticleById.fulfilled, (state) => {
 				state.selectedArticle = null
 				state.isOwner = false
+			})
+
+			// * PUT Article by ID
+			.addCase(updateArticleById.pending, (state) => {
+				state.loading = true
+				state.error = null
+			})
+			.addCase(updateArticleById.fulfilled, (state, action) => {
+				state.loading = false
+				state.selectedArticle = action.payload.article
+			})
+			.addCase(updateArticleById.rejected, (state, action) => {
+				state.loading = false
+				state.error = action.payload as string
 			})
 	}
 })

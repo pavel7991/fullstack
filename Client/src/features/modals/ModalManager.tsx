@@ -5,6 +5,7 @@ import RegisterUserForm from '../auth/ui/RegisterUserForm.tsx'
 import { closeModal } from './modalSlice.ts'
 import { ReactNode } from 'react'
 import CreateArticleForm from '../article/ui/CreateArticleForm.tsx'
+import EditArticleForm from '../article/ui/EditArticleForm.tsx'
 
 interface ModalConfigItem {
 	title: string
@@ -23,6 +24,10 @@ const modalConfig: Record<string, ModalConfigItem> = {
 	CREATE_ARTICLE: {
 		title: 'Create new Article',
 		body: <CreateArticleForm />
+	},
+	EDIT_ARTICLE: {
+		title: 'Edit Article',
+		body: <EditArticleForm />
 	}
 }
 

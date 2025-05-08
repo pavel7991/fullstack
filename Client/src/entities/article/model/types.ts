@@ -1,5 +1,11 @@
 import { User } from '../../user/model/types.ts'
 
+export interface ArticleUpdateRequest {
+	title: string
+	content: string
+	img?: string
+}
+
 export interface ArticleCreateRequest {
 	title: string
 	content: string
