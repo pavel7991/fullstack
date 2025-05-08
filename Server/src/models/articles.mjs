@@ -67,5 +67,3 @@ export const getArticlesStats = async () => {
 	])
 	return stats[0] || {}
 }
-
-export default Article
