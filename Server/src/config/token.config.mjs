@@ -1,11 +1,11 @@
 const options = {
 	algorithm: 'HS512',
 	expiresIn: `30d`,
-	audience: 'http://localhost:3000',
+	audience: process.env.JWT_AUDIENCE || 'http://localhost:3000',
 	issuer: 'MyApp'
 }
 const verifyOptions = {
-	audience: 'http://localhost:3000',
+	audience: process.env.JWT_AUDIENCE || 'http://localhost:3000',
 	issuer: 'MyApp'
 }
 
